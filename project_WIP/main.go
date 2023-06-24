@@ -2,23 +2,30 @@ package main
 
 import (
 	"fmt"
-	"net/http"
+	"strings"
 
+	"github.com/AGou-ops/gitlab-dingtalk-webhook/app"
+	"github.com/AGou-ops/gitlab-dingtalk-webhook/dingtalk"
 	"github.com/AGou-ops/gitlab-dingtalk-webhook/gitlab"
-)
-
-const (
-	path = "/webhooks"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	hook, _ := gitlab.New(
+	// 从环境变量或者配置文件中获取配置信息
+	env := app.GetEnv()
+
+	webhook, _ := gitlab.New(
 		gitlab.Options.Secret("bjPyrYvx-hwwd1LSw8TS"),
 	)
-	http.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	dingtalk_robot := dingtalk.NewRobot(env.Token, env.Secret)
+	fmt.Println(env.Secret)
 
-		payload, err := hook.Parse(
-			r,
+	r := gin.Default()
+	r.Use(app.MethodNotAllowed())
+	r.POST(env.Path, func(ctx *gin.Context) {
+
+		payload, err := webhook.Parse(
+			ctx,
 			gitlab.PushEvents,
 			gitlab.MergeRequestEvents,
 		)
@@ -29,13 +36,13 @@ func main() {
 		}
 
 		switch payload := payload.(type) {
-			case gitlab.PushEventPayload:
-				push := payload
-
-				fmt.Println("获取到push event")
-				fmt.Printf("%v", push)
-				w.Write([]byte("test push event"))
+		case gitlab.PushEventPayload:
+			push := payload
+			fmt.Println(push.UserName)
+			fmt.Println(strings.Repeat("=", 100))
+			fmt.Println("send message to dingtalk")
+			dingtalk_robot.SendTextMessage(fmt.Sprintf("%+v", push), []string{"15628960878"}, false)
 		}
 	})
-	http.ListenAndServe(":3000", nil)
+	r.Run(fmt.Sprintf(":%d", env.ListenPort))
 }

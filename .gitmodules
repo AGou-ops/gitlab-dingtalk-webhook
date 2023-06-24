@@ -1,0 +1,3 @@
+[submodule "webhooks-java"]
+	path = webhooks-java
+	url = https://github.com/EalenXie/webhook.git

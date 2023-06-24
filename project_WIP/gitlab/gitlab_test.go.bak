@@ -31,7 +31,6 @@ const (
 var hook *Webhook
 
 func TestMain(m *testing.M) {
-
 	// setup
 	var err error
 	hook, err = New(Options.Secret("sampleToken!"))
@@ -101,7 +100,11 @@ func TestBadRequests(t *testing.T) {
 				_, parseError = hook.Parse(r, tc.event)
 			})
 			defer server.Close()
-			req, err := http.NewRequest(http.MethodPost, server.URL+path, tc.payload)
+			req, err := http.NewRequest(
+				http.MethodPost,
+				server.URL+path,
+				tc.payload,
+			)
 			assert.NoError(err)
 			req.Header = tc.headers
 			req.Header.Set("Content-Type", "application/json")
@@ -268,7 +271,11 @@ func TestWebhooks(t *testing.T) {
 				results, parseError = hook.Parse(r, tc.event)
 			})
 			defer server.Close()
-			req, err := http.NewRequest(http.MethodPost, server.URL+path, payload)
+			req, err := http.NewRequest(
+				http.MethodPost,
+				server.URL+path,
+				payload,
+			)
 			assert.NoError(err)
 			req.Header = tc.headers
 			req.Header.Set("Content-Type", "application/json")
@@ -320,7 +327,11 @@ func TestJobHooks(t *testing.T) {
 				results, parseError = hook.Parse(r, tc.events...)
 			})
 			defer server.Close()
-			req, err := http.NewRequest(http.MethodPost, server.URL+path, payload)
+			req, err := http.NewRequest(
+				http.MethodPost,
+				server.URL+path,
+				payload,
+			)
 			assert.NoError(err)
 			req.Header = tc.headers
 			req.Header.Set("Content-Type", "application/json")
@@ -499,7 +510,11 @@ func TestSystemHooks(t *testing.T) {
 				results, parseError = hook.Parse(r, SystemHookEvents, tc.event)
 			})
 			defer server.Close()
-			req, err := http.NewRequest(http.MethodPost, server.URL+path, payload)
+			req, err := http.NewRequest(
+				http.MethodPost,
+				server.URL+path,
+				payload,
+			)
 			assert.NoError(err)
 			req.Header.Set("Content-Type", "application/json")
 			req.Header.Set("X-Gitlab-Token", "sampleToken!")

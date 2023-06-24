@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // parse errors
@@ -103,7 +105,7 @@ func New(options ...Option) (*Webhook, error) {
 	hook := new(Webhook)
 	for _, opt := range options {
 		if err := opt(hook); err != nil {
-			return nil, errors.New("Error applying Option")
+			return nil, errors.New("error applying Option")
 		}
 	}
 	return hook, nil
@@ -111,9 +113,10 @@ func New(options ...Option) (*Webhook, error) {
 
 // Parse verifies and parses the events specified and returns the payload object or an error
 func (hook Webhook) Parse(
-	r *http.Request,
+	ctx *gin.Context,
 	events ...Event,
 ) (interface{}, error) {
+	r := ctx.Request
 	defer func() {
 		_, _ = io.Copy(io.Discard, r.Body)
 		_ = r.Body.Close()
