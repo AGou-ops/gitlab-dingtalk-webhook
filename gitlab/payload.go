@@ -813,6 +813,7 @@ type Target struct {
 type LastCommit struct {
 	ID        string     `json:"id"`
 	Message   string     `json:"message"`
+	Title     string     `json:"title"`
 	Timestamp customTime `json:"timestamp"`
 	URL       string     `json:"url"`
 	Author    Author     `json:"author"`
