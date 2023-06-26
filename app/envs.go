@@ -2,7 +2,9 @@ package app
 
 import (
 	"flag"
+	"log"
 	"os"
+	"strconv"
 
 	"github.com/spf13/viper"
 )
@@ -14,11 +16,7 @@ type Env struct {
 	ListenPort int
 }
 
-func GetEnv() Env {
-	viper.SetDefault("Path", os.Getenv("path"))
-	viper.SetDefault("Token", os.Getenv("dingtalk_token"))
-	viper.SetDefault("Secret", os.Getenv("dingtalk_secret"))
-
+func GetEnv() *Env {
 	// 设置服务默认监听端口, 可以从命令行参数传入
 	port := flag.Int("p", 8787, "service listen port")
 	flag.Parse()
@@ -29,15 +27,28 @@ func GetEnv() Env {
 	viper.SetConfigType("dotenv")
 	viper.AddConfigPath(".")
 
+	var env *Env
 	if err := viper.ReadInConfig(); err != nil {
-		panic("Config File NOT FOUND!!!")
+		log.SetPrefix("[INFO]")
+		log.Println("Config File NOT FOUND!!!Use system environment instead.")
+		listen_port, err := strconv.Atoi(os.Getenv("PORT"))
+		if err != nil {
+			log.Println("Cannot convert variable PORT to int.")
+		}
+		env = &Env{
+			Path:       os.Getenv("PATH"),
+			Token:      os.Getenv("TOKEN"),
+			Secret:     os.Getenv("SECRET"),
+			ListenPort: listen_port,
+		}
+	} else {
+		env = &Env{
+			Path:       viper.GetString("Path"),
+			Token:      viper.GetString("Token"),
+			Secret:     viper.GetString("Secret"),
+			ListenPort: viper.GetInt("ListenPort"),
+		}
 	}
 
-	env := Env{
-		Path:       viper.GetString("Path"),
-		Token:      viper.GetString("Token"),
-		Secret:     viper.GetString("Secret"),
-		ListenPort: viper.GetInt("ListenPort"),
-	}
 	return env
 }

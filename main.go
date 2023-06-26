@@ -19,7 +19,7 @@ func main() {
 	dingtalk_robot := dingtalk.NewRobot(env.Token, env.Secret)
 
 	r := gin.Default()
-	err := app.StartService(env, r, webhook, dingtalk_robot)
+	err := app.StartService(*env, r, webhook, dingtalk_robot)
 	if err != nil {
 		fmt.Println(err)
 	}
