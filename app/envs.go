@@ -46,12 +46,14 @@ func GetEnv() *Env {
 		if env.Path == "" || env.Token == "" || env.Secret == "" {
 			log.SetPrefix("[ERROR] ")
 			// 使用反射遍历env结构体，找出哪个字段为空
-			envType := reflect.TypeOf(env)
+			envType := reflect.TypeOf(env).Elem()
+			// 遍历结构体字段
 			for i := 0; i < envType.NumField(); i++ {
-				k := envType.Field(i)
-				v := reflect.ValueOf(envType).Field(i).Interface()
-				if v == "" {
-					log.Println(k.Name, " field is empty.")
+				field := envType.Field(i)
+				value := reflect.ValueOf(env).Elem().Field(i).Interface()
+				// 判断字段值是否为空
+				if value == "" {
+					log.Println(field.Name, "field is empty")
 				}
 			}
 			log.Fatal("Please checkout your system env and try again.")
