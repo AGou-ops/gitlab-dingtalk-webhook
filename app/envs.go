@@ -36,10 +36,15 @@ func GetEnv() *Env {
 			log.Println("Cannot convert variable PORT to int.")
 		}
 		env = &Env{
-			Path:       os.Getenv("PATH"),
+			Path:       os.Getenv("WB_PATH"),
 			Token:      os.Getenv("TOKEN"),
 			Secret:     os.Getenv("SECRET"),
 			ListenPort: listen_port,
+		}
+		// 如果没有环境变量，或者环境变量为空，抛出错误日志并退出程序.
+		if env.Path == "" || env.Token == "" || env.Secret == "" {
+			log.SetPrefix("[ERROR]")
+			log.Fatal("Please checkout your system env.")
 		}
 	} else {
 		env = &Env{
