@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"os"
+	"reflect"
 	"strconv"
 
 	"github.com/spf13/viper"
@@ -29,7 +30,7 @@ func GetEnv() *Env {
 
 	var env *Env
 	if err := viper.ReadInConfig(); err != nil {
-		log.SetPrefix("[INFO]")
+		log.SetPrefix("[INFO] ")
 		log.Println("Config File NOT FOUND!!!Use system environment instead.")
 		listen_port, err := strconv.Atoi(os.Getenv("PORT"))
 		if err != nil {
@@ -43,8 +44,17 @@ func GetEnv() *Env {
 		}
 		// 如果没有环境变量，或者环境变量为空，抛出错误日志并退出程序.
 		if env.Path == "" || env.Token == "" || env.Secret == "" {
-			log.SetPrefix("[ERROR]")
-			log.Fatal("Please checkout your system env.")
+			log.SetPrefix("[ERROR] ")
+			// 使用反射遍历env结构体，找出哪个字段为空
+			envType := reflect.TypeOf(env)
+			for i := 0; i < envType.NumField(); i++ {
+				k := envType.Field(i)
+				v := reflect.ValueOf(envType).Field(i).Interface()
+				if v == "" {
+					log.Println(k.Name, " field is empty.")
+				}
+			}
+			log.Fatal("Please checkout your system env and try again.")
 		}
 	} else {
 		env = &Env{
