@@ -1,5 +1,6 @@
 # build stage
-FROM harbor.nblh.local/library/golang:1.20.5-alpine AS build-stage
+# FROM harbor.nblh.local/library/golang:1.20.5-alpine AS build-stage
+FROM golang:1.20.5-alpine AS build-stage
 
 WORKDIR /app
 
@@ -13,7 +14,8 @@ RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -x -v -o /gitlab_dingtalk_amd64
 
 # run server stage
-FROM harbor.nblh.local/library/alpine:latest
+# FROM harbor.nblh.local/library/alpine:latest
+FROM alpine:latest
 
 WORKDIR /
 
