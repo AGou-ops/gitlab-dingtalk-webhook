@@ -49,7 +49,7 @@ func sendMsg2Dingtalk(
 	var text string
 	if plain.ObjectAttributes.State == "opened" {
 		text = fmt.Sprintf(
-			"### **%s** 发起了一个%s \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n @18557519596",
+			"### **%s** 发起了一个%s \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n > #### MR链接地址：[点我直达](%s/-/merge_requests) @18557519596",
 			plain.User.Name,
 			plain.ObjectKind,
 			plain.Repository.Name,
@@ -60,6 +60,7 @@ func sendMsg2Dingtalk(
 			plain.ObjectAttributes.TargetBranch,
 			plain.ObjectAttributes.Title,
 			plain.ObjectAttributes.State,
+			plain.Project.WebURL,
 		)
 	} else {
 		text = fmt.Sprintf(
