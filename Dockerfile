@@ -19,7 +19,7 @@ FROM alpine:latest
 
 WORKDIR /
 
-COPY .env .
+COPY .env.sample .
 
 COPY --from=build-stage /gitlab_dingtalk_amd64 /gitlab_dingtalk_amd64
 
