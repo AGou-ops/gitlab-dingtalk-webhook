@@ -112,6 +112,20 @@ func sendMsg2Dingtalk(
 			plain.ObjectAttributes.Title,
 			plain.ObjectAttributes.State,
 		)
+	case "reopen":
+		text = fmt.Sprintf(
+			"### **%s** 重新打开了一个%s \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n @18557519596",
+			plain.Reviewers[0].Name,
+			plain.ObjectKind,
+			plain.Repository.Name,
+			plain.Repository.Homepage,
+			plain.ObjectAttributes.LastCommit.Title,
+			plain.ObjectAttributes.LastCommit.URL,
+			plain.ObjectAttributes.SourceBranch,
+			plain.ObjectAttributes.TargetBranch,
+			plain.ObjectAttributes.Title,
+			plain.ObjectAttributes.State,
+		)
 	default:
 		text = "未知action."
 	}
