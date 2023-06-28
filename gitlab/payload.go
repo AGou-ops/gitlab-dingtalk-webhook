@@ -651,6 +651,7 @@ type ObjectAttributes struct {
 	IID              int64      `json:"iid"`
 	URL              string     `json:"url"`
 	Action           string     `json:"action"`
+	Oldrev           string     `json:"oldrev"`
 	TargetBranch     string     `json:"target_branch"`
 	SourceBranch     string     `json:"source_branch"`
 	SourceProjectID  int64      `json:"source_project_id"`

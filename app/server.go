@@ -47,7 +47,9 @@ func sendMsg2Dingtalk(
 ) {
 	title := "😀mergeRequest"
 	var text string
-	if plain.ObjectAttributes.State == "opened" {
+	// TODO: 这个地方后期有空优化一下，自己都看不下去了。。。。
+	switch plain.ObjectAttributes.Action {
+	case "open":
 		text = fmt.Sprintf(
 			"### **%s** 发起了一个%s \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n > #### MR链接地址：[点我直达](%s/-/merge_requests) \n @18557519596",
 			plain.User.Name,
@@ -62,7 +64,41 @@ func sendMsg2Dingtalk(
 			plain.ObjectAttributes.State,
 			plain.Project.WebURL,
 		)
-	} else {
+	case "update":
+		text = fmt.Sprintf(
+			"### **%s** 更新了%s \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 上次commitID：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n > #### MR链接地址：[点我直达](%s/-/merge_requests) \n @18557519596",
+			plain.User.Name,
+			plain.ObjectKind,
+			plain.Repository.Name,
+			plain.Repository.Homepage,
+			plain.ObjectAttributes.LastCommit.Title,
+			plain.ObjectAttributes.LastCommit.URL,
+			plain.ObjectAttributes.Oldrev[:8],
+			fmt.Sprintf(
+				"http://git.nblh.local/nlp/Management/-/commit/%s",
+				plain.ObjectAttributes.Oldrev,
+			),
+			plain.ObjectAttributes.SourceBranch,
+			plain.ObjectAttributes.TargetBranch,
+			plain.ObjectAttributes.Title,
+			plain.ObjectAttributes.State,
+			plain.Project.WebURL,
+		)
+	case "merge":
+		text = fmt.Sprintf(
+			"### **%s** 完成了%s合并 \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n @18557519596",
+			plain.Reviewers[0].Name,
+			plain.ObjectKind,
+			plain.Repository.Name,
+			plain.Repository.Homepage,
+			plain.ObjectAttributes.LastCommit.Title,
+			plain.ObjectAttributes.LastCommit.URL,
+			plain.ObjectAttributes.SourceBranch,
+			plain.ObjectAttributes.TargetBranch,
+			plain.ObjectAttributes.Title,
+			plain.ObjectAttributes.State,
+		)
+	case "close":
 		text = fmt.Sprintf(
 			"### **%s** 关闭了一个%s \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交信息：[%s](%s) \n > #### 合并分支：%s --> %s \n > #### MR标题名称：%s \n > #### MR当前状态：<font color='green'><b>%s</b></font> \n @18557519596",
 			plain.Reviewers[0].Name,
@@ -76,8 +112,9 @@ func sendMsg2Dingtalk(
 			plain.ObjectAttributes.Title,
 			plain.ObjectAttributes.State,
 		)
+	default:
+		text = "未知action."
 	}
-
 	atMobiles := []string{
 		"18557519596",
 	}
