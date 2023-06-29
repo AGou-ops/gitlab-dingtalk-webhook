@@ -2,6 +2,15 @@
 
 背景：钉钉上自带的Gitlab机器人太难用了，显示的信息少，且不会自动艾特指定人。
 
+项目是练手的，使用了一些没必要用的框架，写的很一般。
+
+<img width="436" alt="image" src="https://github.com/AGou-ops/gitlab-dingtalk-webhook/assets/57939102/7fa78be2-db55-4b60-be3e-a6f62a4ccc61">
+
+
+<img width="492" alt="image" src="https://github.com/AGou-ops/gitlab-dingtalk-webhook/assets/57939102/1bea16a9-43be-421f-92b2-5cf9fe48dd32">
+
+
+
 ### 快速开始
 
 ```bash
