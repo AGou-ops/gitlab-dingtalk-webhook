@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/AGou-ops/gitlab-dingtalk-webhook/app"
 	"github.com/AGou-ops/gitlab-dingtalk-webhook/dingtalk"
@@ -21,7 +22,10 @@ func main() {
 	r := gin.Default()
 	err := app.StartService(*env, r, webhook, dingtalk_robot)
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 	}
-	r.Run(fmt.Sprintf(":%d", env.ListenPort))
+	err = r.Run(fmt.Sprintf(":%d", env.ListenPort))
+	if err != nil {
+		log.Println(err)
+	}
 }

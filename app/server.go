@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/AGou-ops/gitlab-dingtalk-webhook/dingtalk"
 	"github.com/AGou-ops/gitlab-dingtalk-webhook/gitlab"
@@ -133,12 +134,14 @@ func sendMsg2Dingtalk(
 		"18557519596",
 	}
 	isAtAll := false
-	robot.SendMarkdownMessage(
+	if err := robot.SendMarkdownMessage(
 		title,
 		text,
 		atMobiles,
 		isAtAll,
-	)
+	); err != nil {
+		log.Println("Failed to send Markdown Message: ", err)
+	}
 }
 
 func sendComment2Dingtalk(
@@ -158,10 +161,12 @@ func sendComment2Dingtalk(
 		"18557519596",
 	}
 	isAtAll := false
-	robot.SendMarkdownMessage(
+	if err := robot.SendMarkdownMessage(
 		title,
 		text,
 		atMobiles,
 		isAtAll,
-	)
+	); err != nil {
+		log.Println("Failed to send Markdown Message: ", err)
+	}
 }
