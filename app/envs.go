@@ -58,6 +58,7 @@ func GetEnv() *Env {
 			log.Fatal("Please checkout your system env and try again.")
 		}
 	} else {
+		// 如果配置文件存在，那么就从配置文件中读取配置.
 		env = &Env{
 			Path:       viper.GetString("Path"),
 			Token:      viper.GetString("Token"),

@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # 设置个代理吧，不然拉都拉不下来...
-ENV http_proxy=172.19.82.111:7891 https_proxy=172.19.82.111:7891
+ENV http_proxy=10.11.43.78:7890 https_proxy=10.11.43.78:7890
 
 RUN go mod download
 
@@ -19,7 +19,7 @@ FROM alpine:latest
 
 WORKDIR /
 
-COPY .env.sample .
+COPY .env .
 
 COPY --from=build-stage /gitlab_dingtalk_amd64 /gitlab_dingtalk_amd64
 
