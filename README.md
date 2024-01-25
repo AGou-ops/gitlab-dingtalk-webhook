@@ -34,14 +34,15 @@ go run . -p 9898
 
 DockerHub: https://hub.docker.com/r/suofeiya/gitlab-dingtalk-webhook
 
+或者自己构建镜像：
+
 ```bash
 docker build -t gitlab-dingtalk:v1.0 .
 # 使用配置文件
 docker run -d --restart always \
   --name gitlab_dingtalk_webhook \
   -v `pwd`/.env:/.env \
-  -p 8787:8787 \
-  gitlab-dingtalk:v1.0
+  -p 8787:8787 \ gitlab-dingtalk:v1.0
   
 # 使用环境变量
 docker run -d --restart always \
