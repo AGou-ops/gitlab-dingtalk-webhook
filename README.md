@@ -11,6 +11,17 @@
 
 ### 快速开始
 
+使用Docker镜像快速开始：
+
+```bash
+docker run -ti --rm -p 8787:8787 -e WB_PATH=/webhooks \
+  -e TOKEN=eb1axxxxxxx \
+  -e SECRET=SECxxxxxxxxxxx \
+  suofeiya/gitlab-dingtalk-webhook:latest
+```
+
+本地快速运行：
+
 ```bash
 git clone https://github.com/AGou-ops/gitlab-dingtalk-webhook.git
 cd gitlab-dingtalk-webhook
