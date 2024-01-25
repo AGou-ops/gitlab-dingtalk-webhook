@@ -47,10 +47,12 @@ func sendPush2Dingtalk(
 		return changedFileList
 	}(plain)
 	text := fmt.Sprintf(
-		"### **%s** 提交了push \n --- \n > #### 项目名称：[%s](%s) \n > #### 最新commitID为： [%s](%s) \n > #### 最新提交信息：%s \n > #### 最新变更文件： \n %s \n @%s",
+		"### **%s** 提交了push \n --- \n > #### 项目名称：[%s](%s) \n > #### 提交分支名称：[%s](%s) \n > #### 最新commitID为： [%s](%s) \n > #### 最新提交信息：%s \n > #### 最新变更文件： \n %s \n @%s",
 		plain.UserName,
 		plain.Project.Name,
 		plain.Project.WebURL,
+		plain.Ref,
+		plain.Project.WebURL+"/-/tree/"+strings.TrimPrefix(plain.Ref, "refs/heads/"),
 		plain.After[:8],
 		plain.Project.WebURL+"/-/commit/"+plain.After,
 		plain.Commits[len(plain.Commits)-1].Message,
