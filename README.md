@@ -11,6 +11,17 @@
 
 ### 快速开始
 
+预先准备：
+
+钉钉机器人配置：
+
+<img width="735" alt="image" src="https://github.com/AGou-ops/gitlab-dingtalk-webhook/assets/57939102/bcdd361c-7d27-48c6-8756-bdda3efece6a">
+
+gitlab配置（记得勾上这些`trigger`，还有填好`Secret token`，token在`main.go`18行）：
+
+<img width="990" alt="image" src="https://github.com/AGou-ops/gitlab-dingtalk-webhook/assets/57939102/ed5d9cb8-5569-4785-88ca-423df7bc8a6d">
+
+
 使用Docker镜像快速开始：
 
 ```bash
